@@ -4,10 +4,9 @@ services:
     hostname: '{{.Node.Hostname}}'
     volumes:
       - /data/syncthing:/var/syncthing
-    networks:
-      - syncthing
     environment:
       - STGUIAPIKEY=A1B2C3
+      # - STNODEFAULTFOLDER=1
     deploy:
       mode: global
 
@@ -16,19 +15,12 @@ services:
     hostname: '{{.Node.Hostname}}'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    networks:
-      - syncthing
     environment:
       - STGUIAPIKEY=A1B2C3
       - ST_SRV_NAME=syncthing_server
-      # - SLEEP_SECONDS=30
+      - SLEEP_SECONDS=30
     deploy:
       replicas: 1
       placement:
         constraints:
           - node.role==manager
-
-networks:
-  syncthing:
-    name: syncthing
-    driver: overlay
